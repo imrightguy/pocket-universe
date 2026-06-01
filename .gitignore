@@ -8,6 +8,17 @@ build/
 venv/
 env/
 
+# Flutter web build
+pocket_web/build/
+pocket_web/.dart_tool/
+pocket_web/.packages
+pocket_web/.pub/
+pocket_web/pubspec.lock
+
+# Dart
+.dart_tool/
+.packages
+
 # IDE
 .vscode/
 .idea/
