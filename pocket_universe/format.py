@@ -115,3 +115,35 @@ def _render(console: Console, u: dict) -> None:
     console.print(f"[bold]Taboos:[/bold] {', '.join(cul['taboos'])}")
     console.print()
     console.print(f"[dim]The dead are {cul['burial']}.[/dim]")
+
+    # ── Climate ────────────────────────────────────────────────────────
+    if "climate" in u:
+        cli = u["climate"]
+        console.print()
+        console.print("[bold]Climate[/bold]", style="cyan")
+        console.print(f"  Classification: {cli.get('axial_tilt_classification', '?').title()}")
+        console.print(f"  Wind cells: {', '.join(cli.get('wind_cells', []))}")
+        console.print(f"  Climate zones: {', '.join(cli.get('climate_zones', []))}")
+        console.print(f"  Extreme weather: {', '.join(cli.get('extreme_weather', []))}")
+        console.print(f"  Annual precipitation: {cli.get('annual_precipitation', '?')}")
+        if cli.get("seasonal_patterns"):
+            console.print(f"  Seasonal weather:", style="bold yellow")
+            for season, pattern in cli["seasonal_patterns"].items():
+                console.print(f"    • {season}: {pattern.get('temperature', '?')}, {pattern.get('precipitation', '?')}")
+
+    # ── Economy ────────────────────────────────────────────────────────
+    if "economy" in u:
+        eco = u["economy"]
+        console.print()
+        console.print("[bold]Economy[/bold]", style="green")
+        console.print(f"  Structure: {eco.get('structure', '?')}")
+        console.print(f"  Currency: {eco.get('currency', '?')}")
+        console.print(f"  Primary industry: {eco.get('primary_industry', '?')}")
+        console.print(f"  Exports: {', '.join(eco.get('exports', []))}")
+        console.print(f"  Imports: {', '.join(eco.get('imports', []))}")
+        lux = eco.get("luxury_goods", [])
+        if lux:
+            console.print(f"  Luxury goods: {', '.join(lux)}")
+        console.print(f"  Trade partners: {', '.join(eco.get('trade_partners', []))}")
+        econ_health = eco.get("economic_health", {})
+        console.print(f"  Economic health: {econ_health.get('status', '?').title()} — {econ_health.get('details', '')}")

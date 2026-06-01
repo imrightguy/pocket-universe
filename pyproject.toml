@@ -14,3 +14,4 @@ dependencies = [
 
 [project.scripts]
 pocket-universe = "pocket_universe.cli:main"
+pocket-universe-api = "pocket_universe.api:main"

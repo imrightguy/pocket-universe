@@ -265,6 +265,16 @@ def generate(seed_str: str) -> dict:
     signature_flora = eco_seed.choice(flora)
     signature_fauna = eco_seed.choice(fauna)
 
+    # ── Bestiary — creatures from physics ─────────────────────────────
+    from pocket_universe.bestiary import generate_ecosystem
+    creatures = generate_ecosystem(
+        seed=seed_str,
+        gravity=gravity,
+        terrain=terrain_type,
+        day_length=day_length,
+        creature_count=eco_seed.int(4, 6),
+    )
+
     # ── Language fragment ──────────────────────────────────────────────
     lang_seed = root.fork("language")
 
@@ -306,10 +316,42 @@ def generate(seed_str: str) -> dict:
         "VSO — verb-subject-object (like Welsh, Arabic)",
         "OVS — object-verb-subject (rare, alien feel)",
         "Free — case-marked, flexible word order",
+        "Temporal-direction — approach/recede/stationary verb encoding",
+        "Evidentiality-required — witnessed/inferred/reported/vision/assumed",
+        "Speaker-relative nouns — ingroup/outgroup/sacred/wild prefixes",
+        "Verbal counting — quantity expressed as verb action",
+        "Future-behind — past in front, future behind spatially",
     ]
     grammar = lang_seed.choice(grammar_patterns)
     has_gender = lang_seed.float() < 0.4
     has_tones = lang_seed.float() < 0.35
+
+    # Alien language features
+    evidentiality_suffixes = {}
+    noun_prefixes = {}
+    if "Evidentiality" in grammar:
+        evidentiality_suffixes = {
+            "witnessed": "sha",
+            "inferred": "the",
+            "reported": "kho",
+            "vision": "li",
+            "assumed": "ga",
+        }
+    if "Speaker-relative" in grammar:
+        noun_prefixes = {
+            "ingroup": "thal",
+            "outgroup": "mor",
+            "sacred": "kest",
+            "wild": "",
+        }
+
+    # Name creatures using the world's lexicon
+    word_list = list(lexicon.values())
+    lang_rng = lang_seed  # reuse the language seed's state
+    for c in creatures["creatures"]:
+        prefix = word_list[lang_rng.int(0, len(word_list) - 1)][:4].capitalize()
+        suffix = word_list[lang_rng.int(0, len(word_list) - 1)][:4]
+        c["native_name"] = prefix + suffix
 
     # ── Culture ────────────────────────────────────────────────────────
     cult_seed = root.fork("culture")
@@ -349,6 +391,39 @@ def generate(seed_str: str) -> dict:
     ]
     burial = cult_seed.choice(burial_traditions)
 
+    ## ── Climate ───────────────────────────────────────────────────────
+    from pocket_universe.climate import generate_climate
+    climate = generate_climate({
+        "seed": seed_str,
+        "physics": {
+            "radius": radius,
+            "gravity": gravity,
+            "day_length": day_length,
+            "year_length": year_length,
+            "axial_tilt": axial_tilt,
+            "has_rings": has_rings,
+            "moon_count": moon_count,
+        },
+        "calendar": {
+            "seasons": season_order,
+            "months": active_months,
+            "festivals": festivals,
+        },
+    })
+
+    ## ── Economy ───────────────────────────────────────────────────────
+    from pocket_universe.economy import generate_economy
+    economy = generate_economy({
+        "seed": seed_str,
+        "terrain": terrain_type,
+        "culture": {
+            "social_structure": social_structure,
+            "values": values,
+            "taboos": taboos,
+            "burial": burial,
+        },
+    })
+
     ## ── Compile result ──────────────────────────────────────────────────
     return {
         "seed": seed_str,
@@ -380,12 +455,15 @@ def generate(seed_str: str) -> dict:
             "fauna": fauna,
             "signature_flora": signature_flora,
             "signature_fauna": signature_fauna,
+            "creatures": creatures["creatures"],
         },
         "language": {
             "lexicon": lexicon,
             "grammar": grammar,
             "has_gender": has_gender,
             "has_tones": has_tones,
+            "evidentiality_suffixes": evidentiality_suffixes or None,
+            "noun_prefixes": noun_prefixes or None,
         },
         "culture": {
             "social_structure": social_structure,
@@ -393,4 +471,6 @@ def generate(seed_str: str) -> dict:
             "taboos": taboos,
             "burial": burial,
         },
+        "climate": climate,
+        "economy": economy,
     }
