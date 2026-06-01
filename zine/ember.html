@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Durnnaren Copse — A Pocket Universe</title>
+<style>
+  @page { size: A4; margin: 12mm; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    background: #0d0d1a;
+    color: #c8c8d4;
+    line-height: 1.5;
+    padding: 20px;
+    font-size: 10pt;
+  }
+  @media print {
+    body { background: #0d0d1a; color: #c8c8d4; padding: 0; }
+  }
+
+  /* ── Layout ── */
+  .page {
+    max-width: 190mm;
+    margin: 0 auto;
+    background: #111122;
+    padding: 20px;
+    border: 1px solid #2a2a4c;
+    box-shadow: 0 0 40px rgba(124,77,255,0.08);
+  }
+  @media print {
+    .page { max-width: 100%; box-shadow: none; border: none; background: #0d0d1a; }
+  }
+
+  /* ── Title ── */
+  .header {
+    text-align: center;
+    border-bottom: 2px solid #2a2a4c;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-size: 22pt;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: #e0e0f0;
+    font-family: 'Gill Sans', 'Helvetica Neue', sans-serif;
+  }
+  .header .subtitle {
+    font-size: 9pt;
+    color: #7c4dff;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .header .seed {
+    font-family: monospace;
+    font-size: 8pt;
+    color: #4a4a6a;
+    margin-top: 6px;
+  }
+
+  /* ── Ascii map ── */
+  .ascii-map {
+    text-align: center;
+    font-family: monospace;
+    font-size: 7pt;
+    line-height: 1.2;
+    color: #7c4dff;
+    margin: 10px 0 16px 0;
+    letter-spacing: 1px;
+  }
+
+  /* ── Physics row ── */
+  .physics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .phys-item {
+    background: #16162e;
+    padding: 6px 8px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #1e1e3a;
+  }
+  .phys-item .val { font-weight: bold; font-size: 11pt; }
+  .phys-item .lbl { font-size: 7pt; color: #6a6a8a; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── Sections ── */
+  .section {
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+    border: 1px solid #1e1e3a;
+    border-radius: 6px;
+    padding: 10px 12px;
+    background: #13132b;
+  }
+  .section h2 {
+    font-family: 'Gill Sans', 'Helvetica Neue', sans-serif;
+    font-size: 11pt;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: #7c4dff;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #1e1e3a;
+    padding-bottom: 4px;
+  }
+  .section table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9pt;
+  }
+  .section td {
+    padding: 2px 4px;
+    vertical-align: top;
+  }
+  .section td:first-child {
+    width: 90px;
+    color: #6a6a8a;
+  }
+  .section td:nth-child(2) {
+    font-weight: 500;
+  }
+  .god {
+    margin-bottom: 6px;
+    padding: 6px 8px;
+    background: #111125;
+    border-radius: 4px;
+    border-left: 2px solid #7c4dff;
+  }
+  .god-name { font-weight: bold; font-family: monospace; }
+  .god-detail { font-size: 8pt; color: #8a8aaa; }
+  .myth-box {
+    margin-top: 6px;
+    font-style: italic;
+    font-size: 9pt;
+    color: #9a9abe;
+    text-align: center;
+    padding: 6px;
+    background: #101020;
+    border-radius: 4px;
+  }
+  .lexicon {
+    column-count: 2;
+    column-gap: 16px;
+    font-size: 8.5pt;
+  }
+  .lex-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 1px 0;
+    break-inside: avoid;
+  }
+  .lex-item .concept { color: #6a6a8a; }
+  .lex-item .word { font-family: monospace; }
+  .culture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    font-size: 9pt;
+  }
+  .culture-item { padding: 4px; background: #111125; border-radius: 4px; }
+  .culture-item .lbl { font-size: 7pt; color: #6a6a8a; text-transform: uppercase; letter-spacing: 1px; }
+  .region-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    font-size: 9pt;
+  }
+  .region-row {
+    padding: 3px 6px;
+    background: #111125;
+    border-radius: 3px;
+  }
+  .region-row .rname { font-family: monospace; }
+  .region-row .rterrain { color: #6a6a8a; font-size: 8pt; }
+  .footer {
+    text-align: center;
+    font-size: 7pt;
+    color: #3a3a5a;
+    margin-top: 12px;
+    font-family: monospace;
+    letter-spacing: 1px;
+  }
+  .sig-species {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+  .sig-card {
+    flex: 1;
+    text-align: center;
+    padding: 6px;
+    background: #111125;
+    border-radius: 4px;
+    border: 1px solid #1e1e3a;
+  }
+  .sig-card .sig-label { font-size: 7pt; color: #6a6a8a; text-transform: uppercase; }
+  .sig-card .sig-name { font-weight: bold; font-family: monospace; font-size: 10pt; color: #b0b0d0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+  <h1>DURNNAREN COPSE</h1>
+  <div class="subtitle">Forest World</div>
+  <div class="seed">pocket-universe://ember</div>
+</div>
+
+<div class="ascii-map">
+          ╱╲<br>
+    ╱╲╱  ╲╲ ╱╲<br>
+  ╱   ╲╱ ╲╱──╲<br>
+ ╱ ╲╱   ╱╲    ╲<br>
+╱  ╱ ╲  │ ╲    ╲<br>
+╲ ╱  ╲─│─│─│─   │<br>
+ ╲    ╱ ╲│ ╱  ╱<br>
+  ╲ ╱  ╱ ╲ ╱ ╱<br>
+   ╲╱ ╱   ╲╱<br>
+    ╲╱<br>
+  <span style="color:#4a4a6a">Eryoth · Brynax · Loros · Ranara</span>
+</div>
+
+<div class="physics">
+  <div class="phys-item">
+    <div class="val">0.91×</div>
+    <div class="lbl">Radius</div>
+  </div>
+  <div class="phys-item">
+    <div class="val">0.68G</div>
+    <div class="lbl">Gravity</div>
+  </div>
+  <div class="phys-item">
+    <div class="val">28.1h</div>
+    <div class="lbl">Day</div>
+  </div>
+  <div class="phys-item">
+    <div class="val">8.3 d</div>
+    <div class="lbl">Year</div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Region &amp; Settlements</h2>
+  <div class="region-grid">
+    <div class="region-row"><span class="rname">Eryoth</span> <span class="rterrain">forest</span></div>
+    <div class="region-row"><span class="rname">Brynax</span> <span class="rterrain">marsh</span></div>
+    <div class="region-row"><span class="rname">Loros</span> <span class="rterrain">volcanic</span></div>
+    <div class="region-row"><span class="rname">Ranara</span> <span class="rterrain">volcanic</span></div>
+  </div>
+  <div style="margin-top:6px; font-size:9pt;">
+    Cities: Palinoss, Palurium, Falnalain, Nironell
+  </div>
+</div>
+
+<div class="section">
+  <h2>Calendar</h2>
+  <table>
+    <tr><td>Seasons</td><td>Awakening → Kindling → Flourish → Waning → Duskfall → Deepfrost</td></tr>
+    <tr><td>Months</td><td>Goldleaf, Hearth, Bloom, Sunwind, Falling, Ember, Barren, Shade</td></tr>
+    <tr><td>Festivals</td><td>Feast, Crown</td></tr>
+    <tr><td>Tilt</td><td>23.6° — moderate, four distinct seasons</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Pantheon</h2>
+  <div class="god">
+    <div class="god-name">The Scribe</div>
+    <div class="god-detail">Scholar · truth · "Whose Eyes Are ara"</div>
+  </div>
+  <div class="god">
+    <div class="god-name">The Passage</div>
+    <div class="god-detail">Traveler · discovery · "Who Holds faln"</div>
+  </div>
+  <div class="god">
+    <div class="god-name">The Shield</div>
+    <div class="god-detail">Guardian · oaths · "Whose Voice Is ar"</div>
+  </div>
+  <div class="god">
+    <div class="god-name">The Devourer</div>
+    <div class="god-detail">Destroyer · death · "Of the zeph"</div>
+  </div>
+  <div class="myth-box">"The world was woven on a cosmic loom."</div>
+</div>
+
+<div class="section">
+  <h2>Ecology</h2>
+  <div class="sig-species">
+    <div class="sig-card">
+      <div class="sig-label">Signature Flora</div>
+      <div class="sig-name">AshEndpod</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-label">Signature Fauna</div>
+      <div class="sig-name">ValeGlider</div>
+    </div>
+  </div>
+  <table>
+    <tr><td>Flora</td><td>StarUrroot, AshEndpod, VoidArmoss, CrystalElvine, SunElmoss, MoonEnmoss, IronAllichen</td></tr>
+    <tr><td>Fauna</td><td>FrostDrifter, DuneStalker, MistDrifter, ValeGlider</td></tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Language Fragment</h2>
+  <div style="margin-bottom:4px; font-size:9pt;">
+    Grammar: VSO (verb-subject-object) — like Welsh, Arabic.
+    No gender. No tones.
+  </div>
+  <div class="lexicon">
+    <div class="lex-item"><span class="concept">salutation</span><span class="word">toral</span></div>
+    <div class="lex-item"><span class="concept">acknowledgment</span><span class="word">urir</span></div>
+    <div class="lex-item"><span class="concept">welcome</span><span class="word">arcor</span></div>
+    <div class="lex-item"><span class="concept">rain</span><span class="word">narnorind</span></div>
+    <div class="lex-item"><span class="concept">river</span><span class="word">irith</span></div>
+    <div class="lex-item"><span class="concept">sea</span><span class="word">ithran</span></div>
+    <div class="lex-item"><span class="concept">ice</span><span class="word">othkest</span></div>
+    <div class="lex-item"><span class="concept">spring</span><span class="word">torzephmor</span></div>
+    <div class="lex-item"><span class="concept">house</span><span class="word">anddor</span></div>
+    <div class="lex-item"><span class="concept">hearth</span><span class="word">marindcor</span></div>
+    <div class="lex-item"><span class="concept">settlement</span><span class="word">ithmorvor</span></div>
+    <div class="lex-item"><span class="concept">cave</span><span class="word">urkalar</span></div>
+    <div class="lex-item"><span class="concept">nest</span><span class="word">mornzephith</span></div>
+    <div class="lex-item"><span class="concept">star</span><span class="word">zephlorran</span></div>
+    <div class="lex-item"><span class="concept">cloud</span><span class="word">ithlithin</span></div>
+    <div class="lex-item"><span class="concept">wind</span><span class="word">thalthalkest</span></div>
+    <div class="lex-item"><span class="concept">storm</span><span class="word">orhastur</span></div>
+    <div class="lex-item"><span class="concept">sun</span><span class="word">ethmarmorn</span></div>
+    <div class="lex-item"><span class="concept">stone</span><span class="word">lororand</span></div>
+    <div class="lex-item"><span class="concept">soil</span><span class="word">seleryand</span></div>
+    <div class="lex-item"><span class="concept">mountain</span><span class="word">erydor</span></div>
+    <div class="lex-item"><span class="concept">valley</span><span class="word">kalkaltar</span></div>
+    <div class="lex-item"><span class="concept">birth</span><span class="word">dorath</span></div>
+    <div class="lex-item"><span class="concept">growth</span><span class="word">vernal</span></div>
+    <div class="lex-item"><span class="concept">death</span><span class="word">xyllithpal</span></div>
+    <div class="lex-item"><span class="concept">sleep</span><span class="word">ithlorcael</span></div>
+    <div class="lex-item"><span class="concept">awake</span><span class="word">mirdor</span></div>
+    <div class="lex-item"><span class="concept">path</span><span class="word">hastmornnar</span></div>
+    <div class="lex-item"><span class="concept">road</span><span class="word">mornonhast</span></div>
+    <div class="lex-item"><span class="concept">horizon</span><span class="word">ordor</span></div>
+    <div class="lex-item"><span class="concept">return</span><span class="word">falnzephel</span></div>
+    <div class="lex-item"><span class="concept">wander</span><span class="word">dorarthal</span></div>
+    <div class="lex-item"><span class="concept">soul</span><span class="word">vorvorith</span></div>
+    <div class="lex-item"><span class="concept">dream</span><span class="word">ethbrynur</span></div>
+    <div class="lex-item"><span class="concept">shadow</span><span class="word">andond</span></div>
+    <div class="lex-item"><span class="concept">light</span><span class="word">lorvar</span></div>
+    <div class="lex-item"><span class="concept">breath</span><span class="word">caelery</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Culture</h2>
+  <div class="culture-grid">
+    <div class="culture-item">
+      <div class="lbl">Social Structure</div>
+      Loose federation of autonomous holds
+    </div>
+    <div class="culture-item">
+      <div class="lbl">Values</div>
+      Patience, cunning, knowledge
+    </div>
+    <div class="culture-item">
+      <div class="lbl">Taboos</div>
+      Wasting water; speaking during the night meal
+    </div>
+    <div class="culture-item">
+      <div class="lbl">Burial</div>
+      Cast into the deepest waters
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  POCKET UNIVERSE · SEED: EMBER · GENERATED 2026-06-01 · pocket-universe.app
+</div>
+
+</div>
+</body>
+</html>
