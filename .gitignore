@@ -15,6 +15,13 @@ pocket_web/.packages
 pocket_web/.pub/
 pocket_web/pubspec.lock
 
+# pocket_app Flutter artifacts
+pocket_app/build/
+pocket_app/.dart_tool/
+pocket_app/.packages
+pocket_app/.pub/
+pocket_app/pubspec.lock
+
 # Dart
 .dart_tool/
 .packages

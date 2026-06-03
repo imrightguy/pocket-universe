@@ -11,7 +11,7 @@ pocket-universe "ember"
 
 ## Try it
 
-**Web app** — open `http://localhost:8081` while the servers are running.
+**Web app** — build the Flutter frontend then open `http://localhost:8080`.
 
 **API** — `http://localhost:8080/generate?seed=ember`
 
@@ -54,15 +54,16 @@ pocket-universe-api
 
 ## Web frontend
 
-A Flutter web app lives in `pocket_web/`. To build and serve:
+A Flutter web app lives in `pocket_app/`. To build:
 
 ```bash
-cd pocket_web
+cd pocket_app
 flutter build web
-python3 -m http.server 8081 --directory build/web
 ```
 
-The frontend talks to the API on `localhost:8080`.
+The API server automatically serves the built app at `http://localhost:8080/`. No separate HTTP server needed.
+
+**Note:** `pocket_web` (the original single-page prototype) has been archived to `archived/pocket_web/`.
 
 ## How it works
 
