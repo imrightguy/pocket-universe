@@ -11,7 +11,6 @@ import math
 import json
 import hashlib
 import struct
-import random
 
 # ── Seeded RNG (same SplitMix64 as main generator for compatibility) ──────────
 
@@ -43,7 +42,9 @@ class Seed:
 
     def sample(self, items, k):
         result = list(items)
-        random.Random(self._next()).shuffle(result)
+        for i in range(len(result) - 1, 0, -1):
+            j = self.int(0, i)
+            result[i], result[j] = result[j], result[i]
         return result[:k]
 
 
